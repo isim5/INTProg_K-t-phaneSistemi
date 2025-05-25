@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Ödünç İşlemleri{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Ödünç İşlemleri</h2>
+    
+    <!-- Ödünç Alma Formu -->
+    <div class="borrow-form mb-5">
+        <h3>Yeni Ödünç Verme</h3>
+        <form method="POST" action="{{ url_for('odunc') }}">
+            {# {{ csrf_token() }} #}  {# CSRF kullanıyorsan açabilirsin #}
+            <div class="mb-3">
+                <label for="uye_id" class="form-label">Üye Seçin:</label>
+                <select class="form-select" id="uye_id" name="uye_id" required>
+                    <option value="" selected disabled>Üye seçin</option>
+                    {% for uye in uyeler %}
+                    <option value="{{ uye.id }}">{{ uye.name }} ({{ uye.email }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="kitap_id" class="form-label">Kitap Seçin:</label>
+                <select class="form-select" id="kitap_id" name="kitap_id" required>
+                    <option value="" selected disabled>Kitap seçin</option>
+                    {% for kitap in kitaplar %}
+                    <option value="{{ kitap.id }}">{{ kitap.title }} - {{ kitap.author }} (ISBN: {{ kitap.isbn }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Ödünç Ver</button>
+        </form>
+    </div>
+    
+    <!-- Aktif Ödünçler -->
+    <h3>Aktif Ödünçler</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered loan-table">
+            <thead>
+                <tr>
+                    <th>Kitap Adı</th>
+                    <th>Üye</th>
+                    <th>Ödünç Tarihi</th>
+                    <th>İade Tarihi</th>
+                    <th>Kalan Gün</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for odunc in aktif_oduncler %}
+                <tr>
+                    <td>{{ odunc.kitap.title }}</td>
+                    <td>{{ odunc.uye.name }}</td>
+                    <td>{{ odunc.odunc_tarihi.strftime('%d.%m.%Y') }}</td>
+                    <td>{{ odunc.iade_tarihi.strftime('%d.%m.%Y') }}</td>
+                    <td>
+                        {% set kalan = odunc.kalan_gun %}
+                        {% if kalan > 0 %}
+                            {{ kalan }} gün
+                        {% else %}
+                            <span class="text-danger">{{ kalan|abs }} gün gecikti</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('iade_al', odunc_id=odunc.id) }}" onsubmit="return confirm('Kitabı iade almak istediğinize emin misiniz?');">
+                            <button type="submit" class="btn btn-success btn-sm">İade Al</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" class="text-center">Aktif ödünç kaydı yok.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

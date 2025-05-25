@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Kütüphane YS{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="sidebar bg-dark text-white p-3 vh-100 position-fixed" style="width: 250px;">
+            <a href="{{ url_for('ana_sayfa') }}" class="nav-link text-white d-flex align-items-center mb-3 {% if request.endpoint == 'ana_sayfa' %}{% endif %}">
+                <i class="fas fa-book-open me-2"></i>
+                <span class="fs-4">Kütüphane YS</span>
+            </a>
+            <hr />
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li>
+                    <a href="{{ url_for('kitaplar') }}" class="nav-link text-white {% if request.endpoint == 'kitaplar' %}active bg-primary{% endif %}">
+                        <i class="fas fa-book me-2"></i>Kitaplar
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('odunc') }}" class="nav-link text-white {% if request.endpoint == 'odunc' %}active bg-primary{% endif %}">
+                        <i class="fas fa-exchange-alt me-2"></i>Ödünç İşlemleri
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('uyeler') }}" class="nav-link text-white {% if request.endpoint == 'uyeler' %}active bg-primary{% endif %}">
+                        <i class="fas fa-users me-2"></i>Üyeler
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('raporlar') }}" class="nav-link text-white {% if request.endpoint == 'raporlar' %}active bg-primary{% endif %}">
+                        <i class="fas fa-chart-bar me-2"></i>Raporlar
+                    </a>
+                </li>
+            </ul>
+            <hr />
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                 
+                    <strong>Admin</strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                    <li><a class="dropdown-item" href="{{ url_for('profil') }}">Profil</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('ayarlar') }}">Ayarlar</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item" href="{{ url_for('logout') }}">Çıkış Yap</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-grow-1 ms-3" style="margin-left: 250px; padding: 20px;">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="container mt-3">
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.settings-tabs .tab');
+        const tabPanels = document.querySelectorAll('.settings-content .tab-panel');
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tabPanels.forEach(p => p.style.display = 'none');
+
+                tab.classList.add('active');
+                if (tabPanels[index]) {
+                    tabPanels[index].style.display = 'block';
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+
+</html>

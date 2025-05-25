@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Sistem Ayarları{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Sistem Ayarları</h2>
+
+    <!-- Flash mesajları -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mt-3">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="settings-tabs my-3">
+        <button class="tab btn btn-outline-primary active" type="button">Genel Ayarlar</button>
+        <button class="tab btn btn-outline-primary" type="button">Güvenlik</button>
+       
+    </div>
+
+    <div class="settings-content">
+        <!-- Genel Ayarlar -->
+        <form method="POST" action="{{ url_for('ayarlar') }}" class="tab-panel active">
+            <input type="hidden" name="form_type" value="general">
+            
+            <h3>Kütüphane Bilgileri</h3>
+            <div class="mb-3">
+                <label for="library_name" class="form-label">Kütüphane Adı</label>
+                <input type="text" id="library_name" name="library_name" class="form-control" value="{{ general_settings.library_name }}">
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Adres</label>
+                <textarea id="address" name="address" class="form-control">{{ general_settings.address }}</textarea>
+            </div>
+
+            <h3>Ödünç Alma Politikası</h3>
+            <div class="mb-3">
+                <label for="max_borrow_days" class="form-label">Maksimum Ödünç Süresi (gün)</label>
+                <input type="number" id="max_borrow_days" name="max_borrow_days" class="form-control" value="{{ general_settings.max_borrow_days }}">
+            </div>
+            <div class="mb-3">
+                <label for="max_book_count" class="form-label">Maksimum Kitap Sayısı</label>
+                <input type="number" id="max_book_count" name="max_book_count" class="form-control" value="{{ general_settings.max_book_count }}">
+            </div>
+
+            <button class="btn btn-primary" type="submit">Ayarları Kaydet</button>
+        </form>
+
+        <!-- Güvenlik -->
+        <form method="POST" action="{{ url_for('ayarlar') }}" class="tab-panel" style="display:none;">
+            <input type="hidden" name="form_type" value="security">
+
+            <h3>Şifre Değiştir</h3>
+            <div class="mb-3">
+                <label for="current_password" class="form-label">Mevcut Şifre</label>
+                <input type="password" id="current_password" name="current_password" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="new_password" class="form-label">Yeni Şifre</label>
+                <input type="password" id="new_password" name="new_password" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="confirm_password" class="form-label">Yeni Şifre (Tekrar)</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control">
+            </div>
+
+            
+
+            <button class="btn btn-primary" type="submit">Değişiklikleri Kaydet</button>
+        </form>
+
+        
+    </div>
+</div>
+
+<!-- Bootstrap JS (5.3) -->
+
+
+
+
+{% endblock %}

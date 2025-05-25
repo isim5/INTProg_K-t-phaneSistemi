@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Yeni Üye Ekle{% endblock %}
+{% block content %}
+<body >
+
+<div class="container mt-4">
+    
+
+<h2>Yeni Üye Ekle</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label>Ad Soyad:</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>E-posta:</label>
+        <input type="email" name="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Şifre:</label>
+        <input type="password" name="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-success">Kaydet</button>
+</form>
+<a href="{{ url_for('uyeler') }}" class="btn btn-secondary mt-3">Geri Dön</a>
+</div>
+</body>
+{% endblock %}

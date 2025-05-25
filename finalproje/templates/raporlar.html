@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Raporlar{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">📊 Raporlar</h2>
+
+    <!-- En Çok Ödünç Alanlar -->
+    <div id="en_cok_odunc" class="mb-5">
+        <h4>📌 En Çok Ödünç Alanlar</h4>
+        {% if en_cok_odunc_alanlar %}
+            <ul class="list-group">
+                {% for uye, adet in en_cok_odunc_alanlar %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ uye }}
+                        <span class="badge bg-primary rounded-pill">{{ adet }} kez</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Veri bulunamadı.</p>
+        {% endif %}
+    </div>
+
+    <!-- Geciken Kitaplar -->
+    <div id="geciken_kitaplar" class="mb-5">
+        <h4 class="mb-3">⏰ Geciken Kitaplar ({{ current_date.strftime('%d.%m.%Y') }})</h4>
+        {% if geciken_kitaplar %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Kitap</th>
+                            <th>Üye</th>
+                            <th>Ödünç Tarihi</th>
+                            <th>İade Tarihi</th>
+                            <th>Gecikme</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for odunc in geciken_kitaplar %}
+                        <tr>
+                            <td>{{ odunc.kitap.title }}</td>
+                            <td>{{ odunc.uye.name }}</td>
+                            <td>{{ odunc.odunc_tarihi.strftime('%d.%m.%Y') }}</td>
+                            <td>{{ odunc.iade_tarihi.strftime('%d.%m.%Y') }}</td>
+                            <td class="text-danger fw-bold">{{ (current_date - odunc.iade_tarihi).days }} gün</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>Geciken kitap yok.</p>
+        {% endif %}
+    </div>
+
+    <!-- Popüler Kitaplar -->
+    <div id="populer_kitaplar" class="mb-5">
+        <h4>🔥 Popüler Kitaplar</h4>
+        {% if populer_kitaplar %}
+            <ul class="list-group">
+                {% for kitap, adet in populer_kitaplar %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ kitap }}
+                        <span class="badge bg-success rounded-pill">{{ adet }} kez</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Veri bulunamadı.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

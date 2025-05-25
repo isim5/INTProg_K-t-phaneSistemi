@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Profil Bilgileri</h2>
+    
+    <div class="profile-header d-flex gap-3 align-items-center mb-4">
+        <div class="profile-info">
+            <h3>{{ user.name }}</h3>
+            {# Eğer user.role varsa göster #}
+            {% if user.role %}
+            <p>{{ user.role }}</p>
+            {% endif %}
+            {# Eğer user.last_login varsa göster #}
+            {% if user.last_login %}
+            <p>Son Giriş: {{ user.last_login.strftime('%d.%m.%Y %H:%M') }}</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="profile-details row">
+        <div class="detail-card col-md-6 mb-3 p-3 border rounded">
+            <h4>Kişisel Bilgiler</h4>
+
+            <form method="POST" action="{{ url_for('profil') }}">
+                <div class="mb-3">
+                    <label for="name" class="form-label"><strong>Ad Soyad</strong></label>
+                    <input type="text" id="name" name="name" class="form-control" value="{{ user.name }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label"><strong>E-posta</strong></label>
+                    <input type="email" id="email" name="email" class="form-control" value="{{ user.email }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>Üyelik Tarihi:</strong></label>
+                    <p>{{ user.register_date.strftime('%d.%m.%Y') if user.register_date else '' }}</p>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Bilgileri Güncelle</button>
+            </form>
+        </div>
+      
+    </div>
+</div>
+{% endblock %}

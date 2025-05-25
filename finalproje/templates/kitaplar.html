@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Kitaplar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Kitaplar</h2>
+
+    <!-- Arama ve Filtreleme -->
+    <form method="GET" action="{{ url_for('kitaplar') }}" class="mb-3 d-flex gap-2 align-items-center">
+        <input type="text" name="search" class="form-control" placeholder="Kitap adı, yazar veya ISBN ara..." value="{{ search }}">
+        <select name="category" class="form-select" style="width: 200px;">
+            <option value="">Tüm Kategoriler</option>
+            <option value="Roman" {% if category == 'Roman' %}selected{% endif %}>Roman</option>
+            <option value="Bilim Kurgu" {% if category == 'Bilim Kurgu' %}selected{% endif %}>Bilim Kurgu</option>
+            <option value="Tarih" {% if category == 'Tarih' %}selected{% endif %}>Tarih</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Ara</button>
+        <a href="{{ url_for('kitap_ekle') }}" class="btn btn-success ms-auto">Yeni Kitap Ekle</a>
+    </form>
+
+    <!-- Kitap Listesi -->
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Kitap Adı</th>
+                <th>Yazar</th>
+                <th>Yayınevi</th>
+                <th>Kategori</th>
+                <th>Durum</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.publisher }}</td>
+                <td>{{ book.category }}</td>
+                <td>{{ book.status }}</td>
+                <td>
+                    <a href="{{ url_for('kitap_duzenle', book_id=book.id) }}" class="btn btn-sm btn-warning">Düzenle</a>
+                    <form method="POST" action="{{ url_for('kitap_sil', book_id=book.id) }}" style="display:inline;" onsubmit="return confirm('Bu kitabı silmek istediğinize emin misiniz?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Sil</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="text-center">Kayıtlı kitap bulunamadı.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Sayfalama -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        {% if pagination.has_prev %}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for('kitaplar', page=pagination.prev_num, search=search, category=category) }}">Önceki</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Önceki</span></li>
+        {% endif %}
+
+        {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+          {% if p %}
+            {% if p == page %}
+              <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="{{ url_for('kitaplar', page=p, search=search, category=category) }}">{{ p }}</a></li>
+            {% endif %}
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">…</span></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for('kitaplar', page=pagination.next_num, search=search, category=category) }}">Sonraki</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Sonraki</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+</div>
+{% endblock %}

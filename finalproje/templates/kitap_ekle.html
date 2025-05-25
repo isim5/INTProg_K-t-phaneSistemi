@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Yeni Kitap Ekle{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Yeni Kitap Ekle</h2>
+    <form method="POST" action="{{ url_for('kitap_ekle') }}">
+        <div class="mb-3">
+            <label for="isbn" class="form-label">ISBN *</label>
+            <input type="text" class="form-control" id="isbn" name="isbn" required>
+        </div>
+        <div class="mb-3">
+            <label for="title" class="form-label">Kitap Adı *</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="mb-3">
+            <label for="author" class="form-label">Yazar *</label>
+            <input type="text" class="form-control" id="author" name="author" required>
+        </div>
+        <div class="mb-3">
+            <label for="publisher" class="form-label">Yayınevi</label>
+            <input type="text" class="form-control" id="publisher" name="publisher">
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Kategori</label>
+            <select id="category" name="category" class="form-select">
+                <option value="">Seçiniz</option>
+                <option value="Roman">Roman</option>
+                <option value="Bilim Kurgu">Bilim Kurgu</option>
+                <option value="Tarih">Tarih</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">Durum</label>
+            <select id="status" name="status" class="form-select">
+                <option value="Rafta">Rafta</option>
+                <option value="Ödünçte">Ödünçte</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Kaydet</button>
+        <a href="{{ url_for('kitaplar') }}" class="btn btn-secondary">İptal</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <ul class="list-group">
+                    {% for category, message in messages %}
+                    <li class="list-group-item alert alert-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <div style="margin-left: 300px; margin-right: 50px;">
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2"></h1>
+
+            <div class="d-flex align-items-center">
+                <form class="d-flex me-3" role="search">
+                    <input class="form-control form-control-sm me-2" type="search" placeholder="Kitap ara..."
+                        aria-label="Ara">
+                    <button class="btn btn-sm btn-outline-primary" type="submit">Ara</button>
+                </form>
+
+                <div class="btn-group" role="group" aria-label="Giriş işlemleri">
+                    {% if current_user.is_authenticated %}
+                    <span class="navbar-text me-3">Hoş geldiniz, {{ current_user.name }}</span>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-light">Çıkış Yap</a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" class="nav-link active">
+                        <button type="button" class="btn btn-sm btn-outline-success">Giriş Yap</button>
+                    </a>
+                    <a href="{{ url_for('register') }}" class="nav-link active">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Kayıt Ol</button>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow h-100 py-2 stat-card books">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Toplam Kitap
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ toplam_kitap }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-book fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diğer 3 kart -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow h-100 py-2 stat-card members">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Üye Sayısı</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ uye_sayisi }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow h-100 py-2 stat-card loans">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Ödünç Kitaplar</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ odunc_kitaplar }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-exchange-alt fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow h-100 py-2 stat-card overdue">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Geciken Kitaplar
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ geciken_kitaplar }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Son Ödünçler -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Son Ödünç İşlemleri</h6>
+                <a href="#" class="btn btn-sm btn-primary">Tümünü Görüntüle</a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Kitap Adı</th>
+                                <th>Üye</th>
+                                <th>Ödünç Tarihi</th>
+                                <th>İade Tarihi</th>
+                                <th>Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for islem in son_odunc_islemleri %}
+                            <tr>
+                                <td>{{ islem.kitap.title }}</td>
+                                <td>{{ islem.uye.name }}</td>
+                                <td>{{ islem.odunc_tarihi.strftime('%d-%m-%Y') }}</td>
+                                <td>{{ islem.iade_tarihi.strftime('%d-%m-%Y') }}</td>
+                                <td>
+                                    {% if islem.durum == 'Normal' %}
+                                    <span class="badge bg-success">Normal</span>
+                                    {% elif islem.durum == 'Gecikmiş' %}
+                                    <span class="badge bg-danger">Gecikmiş</span>
+                                    {% elif islem.durum == 'Son 3 Gün' %}
+                                    <span class="badge bg-warning text-dark">Son 3 Gün</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Yeni Kitaplar -->
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Yeni Eklenen Kitaplar</h6>
+                        <a href="#" class="btn btn-sm btn-primary">Tüm Kitaplar</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for kitap in yeni_kitaplar %}
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{ kitap.title }}</h6>
+                                        <p class="card-text text-muted small">Yazar: {{ kitap.author }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yeni Üyeler -->
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Yeni Üyeler</h6>
+                        <a href="#" class="btn btn-sm btn-primary">Tüm Üyeler</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            {% for uye in yeni_uyeler %}
+                            <a href="#"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ uye.name }}</h6>
+                                </div>
+                                <span class="badge bg-primary rounded-pill">Yeni</span>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
