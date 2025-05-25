@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "name": "Hasan Hüseyin",
+        "email": "hasankeskint204@gmail.com"
+    },
+    {
+        "id": 2,
+        "name": "yeni kullanıcı",
+        "email": "yenikulla@gmail.com"
+    },
+    {
+        "id": 3,
+        "name": "eben",
+        "email": "eben@gmail.com"
+    },
+    {
+        "id": 4,
+        "name": "ali12",
+        "email": "ali12@gmail.com"
+    },
+    {
+        "id": 5,
+        "name": "leyla",
+        "email": "leyla@gmail.com"
+    }
+]
