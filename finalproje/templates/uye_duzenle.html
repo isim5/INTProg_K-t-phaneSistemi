@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Üye Düzenle{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Üye Bilgilerini Düzenle</h2>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="name" class="form-label">Ad Soyad</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ uye.name }}" required>
+        </div>
+     
+        <div class="mb-3">
+            <label for="email" class="form-label">E-posta</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ uye.email }}" required>
+        </div>
+       
+        
+        <button type="submit" class="btn btn-success">Güncelle</button>
+        <a href="{{ url_for('uyeler') }}" class="btn btn-secondary ms-2">İptal</a>
+    </form>
+</div>
+{% endblock %}
