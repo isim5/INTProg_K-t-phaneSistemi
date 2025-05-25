@@ -1,0 +1,99 @@
+[
+    {
+        "id": 1,
+        "name": "Hasan Hüseyin",
+        "email": "hasankeskint204@gmail.com",
+        "register_date": null,
+        "loans": [
+            {
+                "id": 2,
+                "odunc_tarihi": "2025-05-25",
+                "iade_tarihi": "2025-06-24",
+                "iade_edildi": false,
+                "book": {
+                    "id": 1,
+                    "isbn": "12",
+                    "title": "Anna Karenina",
+                    "author": "Lev Tolstoy",
+                    "publisher": "ardakıtapbasan",
+                    "category": "Roman",
+                    "status": "Ödünçte"
+                }
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "eben",
+        "email": "eben@gmail.com",
+        "register_date": null,
+        "loans": [
+            {
+                "id": 3,
+                "odunc_tarihi": "2025-05-25",
+                "iade_tarihi": "2025-06-24",
+                "iade_edildi": false,
+                "book": {
+                    "id": 2,
+                    "isbn": "1",
+                    "title": "Çalıkuşu",
+                    "author": "Reşat Nuri Güntekin",
+                    "publisher": "ardakıtapbasan",
+                    "category": "Roman",
+                    "status": "Ödünçte"
+                }
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "ali12",
+        "email": "ali12@gmail.com",
+        "register_date": null,
+        "loans": [
+            {
+                "id": 1,
+                "odunc_tarihi": "2025-05-22",
+                "iade_tarihi": "2025-06-21",
+                "iade_edildi": true,
+                "book": {
+                    "id": 2,
+                    "isbn": "1",
+                    "title": "Çalıkuşu",
+                    "author": "Reşat Nuri Güntekin",
+                    "publisher": "ardakıtapbasan",
+                    "category": "Roman",
+                    "status": "Ödünçte"
+                }
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "name": "arda",
+        "email": "arda@gmail.com",
+        "register_date": null,
+        "loans": []
+    },
+    {
+        "id": 7,
+        "name": "nagihan",
+        "email": "nagihan@gmail.com",
+        "register_date": "2025-05-22 11:36:55",
+        "loans": []
+    },
+    {
+        "id": 8,
+        "name": "leyla",
+        "email": "leyla@gmail.com",
+        "register_date": "2025-05-25 09:24:23",
+        "loans": []
+    },
+    {
+        "id": 9,
+        "name": "cagri",
+        "email": "cagri@gmail.com",
+        "register_date": "2025-05-25 11:23:28",
+        "loans": []
+    }
+]
