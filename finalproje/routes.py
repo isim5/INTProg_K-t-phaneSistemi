@@ -65,7 +65,5 @@ def export_books_to_json():
 
         print("Kitaplar JSON dosyasına aktarıldı.")
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # Veritabanı tablolarını oluşturur
-        export_books_to_json()
+if __name__ == "__main__":
+    app.run(host="0.0.0.0",port=int(os.environ.get("PORT",5000)))
